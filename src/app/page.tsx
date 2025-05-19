@@ -31,7 +31,7 @@ import SOCIAL_MEDIA_PROJECT_IMAGE from '../../public/social-media.avif';
 import WATCHMEN_PROJECT_IMAGE from '../../public/ecom.jpg';
 import PROFILE_IMAGE from '../../public/profile-image.jpg';
 import { CheckCircle } from "lucide-react";
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 
 // Form schema using Zod
 const contactFormSchema = z.object({
@@ -109,7 +109,7 @@ const ProjectCard = ({
     technologies: string[];
     description: string;
     githubLink: string;
-    imageUrl?: string;
+    imageUrl?: StaticImageData;
 }) => (
     <motion.div
         variants={itemVariants}
