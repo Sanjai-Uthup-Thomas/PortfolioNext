@@ -627,10 +627,15 @@ const SanjaiPortfolio = () => {
                                         {
                                             icon: <Phone className="w-6 h-6 text-purple-400 group-hover:text-purple-300" />,
                                             text: '+91 9048856828',
+                                            link: 'tel:+919048856828',
                                         },
                                         {
                                             icon: <Mail className="w-6 h-6 text-purple-400 group-hover:text-purple-300" />,
                                             text: 'sanjaiuthupthomas@gmail.com',
+                                            isMultiLine: true,
+                                            link: 'mailto:sanjaiuthupthomas@gmail.com',
+
+
                                         },
                                         {
                                             icon: <MapPin className="w-6 h-6 text-purple-400 group-hover:text-purple-300 mt-1" />,
@@ -658,12 +663,13 @@ const SanjaiPortfolio = () => {
                                                     href={item.link}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="text-purple-400 dark:text-purple-300 hover:underline text-lg transition-colors"
+                                                    className="text-gray-300 dark:text-gray-400 text-lg break-words max-w-[90%]"
                                                 >
                                                     {item.text}
                                                 </a>
                                             ) : (
-                                                <span className="text-gray-300 dark:text-gray-400 text-lg">{item.text}</span>
+                                                <span className="text-gray-300 dark:text-gray-400 text-lg break-words max-w-[90%]"
+                                                >{item.text}</span>
                                             )}
                                         </div>
                                     ))}
