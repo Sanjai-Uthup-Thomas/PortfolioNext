@@ -32,7 +32,7 @@ import WATCHMEN_PROJECT_IMAGE from '../../public/ecom.jpg';
 import PROFILE_IMAGE from '../../public/profile-image.jpg';
 import { CheckCircle } from "lucide-react";
 import Image, { StaticImageData } from 'next/image';
-
+import toast, { Toaster } from 'react-hot-toast';
 // Form schema using Zod
 const contactFormSchema = z.object({
     name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -179,14 +179,26 @@ const SanjaiPortfolio = () => {
     // Function to handle form submission
     const onSubmit = async (data: z.infer<typeof contactFormSchema>) => {
         console.log("Form data:", data); // Log the form data
-
+        const toastId = toast.loading('Sending your message...');
         try {
             // Replace this with your actual API call
-            await new Promise((resolve) => setTimeout(resolve, 2000));
+            const res = await fetch('/api/contactMe', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
+            if (res.ok) {
+                toast.success('Message sent successfully!', { id: toastId });
+            } else {
+                toast.error('Failed to send message.', { id: toastId });
+            }
             console.log("Email sent successfully");
-            reset(); // Reset the form after successful submission
+            setTimeout(() => {
+                reset();
+            }, 2000)
         } catch (error) {
             console.error("Failed to send email:", error);
+            toast.error('Something went wrong.', { id: toastId });
         } finally {
         }
     };
@@ -262,15 +274,6 @@ const SanjaiPortfolio = () => {
                             >
                                 <Github className="mr-2 w-6 h-6" />
                                 <span>GitHub</span>
-                            </a>
-                            <a
-                                href="https://sanjaiuthupthomas.in"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-purple-400 dark:text-purple-300 hover:underline flex items-center transition-colors duration-200 text-lg"
-                            >
-                                <Link className="mr-2 w-6 h-6" />
-                                <span>Portfolio</span>
                             </a>
                         </div>
                     </motion.div>
