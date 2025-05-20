@@ -9,8 +9,9 @@ export const metadata: Metadata = {
   description: "Portfolio of Sanjai Uthup Thomas, a Full Stack Web & Mobile Developer specializing in React, Node.js, NestJS, and scalable backend systems.",
   icons: {
     icon: [
-      { url: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
-      { url: "/favicon-16x16.png", type: "image/png", sizes: "16x16" },
+    { url: "/favicon.ico", type: "image/x-icon" },
+    { url: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
+    { url: "/favicon-16x16.png", type: "image/png", sizes: "16x16" },
     ],
     apple: "/apple-touch-icon.png",
   },
@@ -52,7 +53,7 @@ export const metadata: Metadata = {
     description: "Explore my portfolio showcasing modern full stack applications.",
     url: "https://www.sanjaiuthupthomas.in",
     siteName: "Sanjai Uthup Thomas Portfolio",
-    locale: "en_IN",
+    locale: "en-IN",
     type: "website",
   },
 };
