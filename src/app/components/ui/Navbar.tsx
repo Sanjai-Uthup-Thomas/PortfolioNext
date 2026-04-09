@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Download } from "lucide-react";
 import { cn } from "@/app/lib/utils";
-import LOGO from '../../../../public/logo_1.png';
 import { motion } from "framer-motion";
+import LOGO from "../../../../public/logo_1.png";
 
 const sections = [
     "home",
@@ -19,34 +19,10 @@ const sections = [
 const Navbar = () => {
     const [active, setActive] = useState("home");
     const [open, setOpen] = useState(false);
-    const [scrolled, setScrolled] = useState(false);
     const [scrollProgress, setScrollProgress] = useState(0);
-    useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 50);
 
-            const scrollY = window.scrollY;
-
-            sections.forEach((id) => {
-                const el = document.getElementById(id);
-                if (!el) return;
-
-                const top = el.offsetTop - 120;
-                const bottom = top + el.offsetHeight;
-
-                if (scrollY >= top && scrollY < bottom) {
-                    setActive(id);
-                }
-            });
-        };
-
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
     // 🔥 Scroll Logic
     useEffect(() => {
-        let lastScroll = 0;
-
         const handleScroll = () => {
             const scrollY = window.scrollY;
 
@@ -56,7 +32,6 @@ const Navbar = () => {
 
             setScrollProgress((scrollY / height) * 100);
 
-            // active section
             sections.forEach((id) => {
                 const el = document.getElementById(id);
                 if (!el) return;
@@ -88,25 +63,28 @@ const Navbar = () => {
                     style={{ width: `${scrollProgress}%` }}
                 />
             </div>
+
             {/* 🔥 Floating Navbar */}
-            <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-4xl">
+            <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-5xl">
 
                 {/* Glow */}
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 blur-xl rounded-full opacity-60" />
 
-                <div className="relative flex items-center justify-between px-6 py-3 rounded-full 
-          bg-white/[0.04] backdrop-blur-xl border border-white/[0.08] shadow-xl">
+                <div
+                    className="relative flex items-center justify-between px-6 py-3 rounded-full 
+          bg-white/[0.04] backdrop-blur-xl border border-white/[0.08] shadow-xl"
+                >
 
-                    {/* Logo */}
+                    {/* 🧠 Logo */}
                     <div
                         onClick={() => scrollTo("home")}
-                        className="text-white font-semibold cursor-pointer pt-1"
+                        className="cursor-pointer"
                     >
-                        <Image width={220} height={50} src={LOGO} alt="Logo" />
+                        <Image src={LOGO} alt="Logo" width={200} height={40} />
                     </div>
 
-                    {/* Desktop Nav */}
-                    <div className="hidden md:flex items-center gap-3 relative">
+                    {/* 🔗 Desktop Nav */}
+                    <div className="hidden md:flex items-center gap-3">
 
                         {sections.map((sec) => (
                             <button
@@ -115,43 +93,41 @@ const Navbar = () => {
                                 className={cn(
                                     "relative px-4 py-2 text-sm capitalize rounded-full transition-all duration-300",
                                     "hover:text-white hover:scale-[1.05]",
-                                    active === sec
-                                        ? "text-white"
-                                        : "text-white/50"
+                                    active === sec ? "text-white" : "text-white/50"
                                 )}
                             >
-                                {/* 🔥 Active Pill (Glass + Glow) */}
                                 {active === sec && (
                                     <motion.span
                                         layoutId="active-pill"
                                         className="absolute inset-0 rounded-full 
-          bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-purple-500/20
-          border border-white/10
-          shadow-[0_0_20px_rgba(203,108,230,0.4)]
-          backdrop-blur-md"
+                    bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-purple-500/20
+                    border border-white/10
+                    shadow-[0_0_20px_rgba(203,108,230,0.4)]
+                    backdrop-blur-md"
                                         transition={{ type: "spring", stiffness: 280, damping: 25 }}
                                     />
                                 )}
 
-                                {/* ✨ Hover Glow */}
-                                <span
-                                    className={cn(
-                                        "absolute inset-0 rounded-full opacity-0 transition duration-300",
-                                        "bg-white/5 blur-md",
-                                        "group-hover:opacity-100"
-                                    )}
-                                />
-
-                                {/* Text */}
-                                <span className="relative z-10 tracking-wide">
-                                    {sec}
-                                </span>
+                                <span className="relative z-10">{sec}</span>
                             </button>
                         ))}
 
+                        {/* 🔥 Resume Button */}
+                        <a
+                            href="/Sanjai_uthup_thomas_resume.pdf"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="ml-2 inline-flex items-center gap-2 px-4 py-2 rounded-full 
+              bg-gradient-to-r from-purple-600 to-pink-500 text-white text-sm
+              shadow-lg hover:scale-105 transition-all duration-300"
+                        >
+                            <Download className="w-4 h-4" />
+                            Resume
+                        </a>
+
                     </div>
 
-                    {/* Mobile Toggle */}
+                    {/* 📱 Mobile Toggle */}
                     <button
                         onClick={() => setOpen(!open)}
                         className="md:hidden text-white"
@@ -164,15 +140,30 @@ const Navbar = () => {
             {/* 📱 Mobile Menu */}
             {open && (
                 <div className="fixed inset-0 z-40 bg-black/90 backdrop-blur-xl flex flex-col items-center justify-center gap-8 text-xl">
+
                     {sections.map((sec) => (
                         <div
                             key={sec}
                             onClick={() => scrollTo(sec)}
-                            className="text-white/70 hover:text-white capitalize cursor-pointer transition"
+                            className="text-white/70 hover:text-white transition capitalize cursor-pointer"
                         >
                             {sec}
                         </div>
                     ))}
+
+                    {/* Resume (Mobile) */}
+                    <a
+  href="/Sanjai_uthup_thomas_resume.pdf"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="mt-4 inline-flex items-center gap-2 px-6 py-3 rounded-full 
+  bg-gradient-to-r from-purple-600 to-pink-500 text-white 
+  hover:scale-105 transition-all duration-300"
+>
+  <Download className="w-4 h-4" />
+  <span>Resume</span>
+</a>
+
                 </div>
             )}
         </>

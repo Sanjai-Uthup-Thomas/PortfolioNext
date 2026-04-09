@@ -75,6 +75,7 @@ const itemVariants = {
     },
 };
 const SanjaiPortfolio = () => {
+
     const [isLoading, setIsLoading] = useState(false);
     const [activeSection, setActiveSection] = useState('home');
     const introRef = useRef<HTMLDivElement>(null);
