@@ -91,7 +91,7 @@ const Footer = () => {
                         © {new Date().getFullYear()} Sanjai Uthup Thomas
                     </p>
 
-                    <p className="text-white/30" onClick={() => { throw new Error("Test"); }}>
+                    <p className="text-white/30">
                         Designed & Built with ❤️ using Next.js
                     </p>
 

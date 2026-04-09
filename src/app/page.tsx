@@ -34,10 +34,13 @@ import { CheckCircle } from "lucide-react";
 import Image, { StaticImageData } from 'next/image';
 import toast, { Toaster } from 'react-hot-toast';
 import SkillsSection from './components/ui/SkillsSection';
-import Particles from './components/ui/Particles';
+import dynamic from "next/dynamic";
 import FloatingContact from './components/ui/FloatingContact';
 import Navbar from './components/ui/Navbar';
 import Footer from './components/ui/Footer';
+const Particles = dynamic(() => import("../app/components/ui/Particles"), {
+    ssr: false,
+});
 // Form schema using Zod
 const contactFormSchema = z.object({
     name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -178,8 +181,9 @@ const SanjaiPortfolio = () => {
                                     alt="Sanjai Uthup Thomas"
                                     width={160}
                                     height={160}
-                                    className="relative w-36 h-36 md:w-40 md:h-40 object-cover rounded-full 
+                                    className="relative object-cover rounded-full 
           border border-white/10 shadow-2xl transition duration-300 group-hover:scale-105"
+                                    priority
                                 />
 
                                 {/* Subtle Overlay */}
@@ -201,7 +205,7 @@ const SanjaiPortfolio = () => {
                             variants={itemVariants}
                             className="text-5xl md:text-6xl font-bold text-white mb-4 leading-tight"
                         >
-                             Hi, I&apos;m Sanjai
+                            Hi, I&apos;m Sanjai
                         </motion.h1>
 
                         {/* ✨ ROLE */}
@@ -475,6 +479,9 @@ const SanjaiPortfolio = () => {
                                     src={DEVX_PROJECT_IMAGE}
                                     alt="DevX Project"
                                     fill
+                                    sizes="(max-width: 768px) 100vw,
+         (max-width: 1200px) 50vw,
+         33vw"
                                     className="rounded-2xl object-cover transition duration-500 group-hover:scale-105 opacity-80 group-hover:opacity-100"
                                 />
                             </div>
@@ -532,6 +539,9 @@ const SanjaiPortfolio = () => {
                                     src={SOCIAL_MEDIA_PROJECT_IMAGE}
                                     alt="Social Media"
                                     fill
+                                    sizes="(max-width: 768px) 100vw,
+         (max-width: 1200px) 50vw,
+         33vw"
                                     className="rounded-2xl object-cover transition duration-500 group-hover:scale-105 opacity-80 group-hover:opacity-100"
                                 />
                             </div>
@@ -590,6 +600,9 @@ const SanjaiPortfolio = () => {
                                     src={WATCHMEN_PROJECT_IMAGE}
                                     alt="Watchmen"
                                     fill
+                                    sizes="(max-width: 768px) 100vw,
+         (max-width: 1200px) 50vw,
+         33vw"
                                     className="rounded-2xl object-cover transition duration-500 group-hover:scale-105 opacity-80 group-hover:opacity-100"
                                 />
                             </div>
@@ -706,7 +719,7 @@ const SanjaiPortfolio = () => {
                                     {/* 💬 Subtitle */}
                                     <p className="text-white/50 text-sm md:text-base max-w-md mx-auto leading-relaxed">
                                         Have a project, idea, or opportunity? Feel free to reach out — I’ll get back to you soon.
-                                    </p>    
+                                    </p>
 
                                 </div>
                                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -946,7 +959,7 @@ const SanjaiPortfolio = () => {
                         </div>
                     </div>
                 </section>
-                <Footer/>
+                <Footer />
             </div>
             <FloatingContact />
         </div>

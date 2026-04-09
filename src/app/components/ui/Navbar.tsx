@@ -80,7 +80,7 @@ const Navbar = () => {
                         onClick={() => scrollTo("home")}
                         className="cursor-pointer"
                     >
-                        <Image src={LOGO} alt="Logo" width={200} height={40} />
+                        <Image src={LOGO} alt="Logo" width={200} height={40} priority/>
                     </div>
 
                     {/* 🔗 Desktop Nav */}
@@ -153,16 +153,16 @@ const Navbar = () => {
 
                     {/* Resume (Mobile) */}
                     <a
-  href="/Sanjai_uthup_thomas_resume.pdf"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="mt-4 inline-flex items-center gap-2 px-6 py-3 rounded-full 
+                        href="/Sanjai_uthup_thomas_resume.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-4 inline-flex items-center gap-2 px-6 py-3 rounded-full 
   bg-gradient-to-r from-purple-600 to-pink-500 text-white 
   hover:scale-105 transition-all duration-300"
->
-  <Download className="w-4 h-4" />
-  <span>Resume</span>
-</a>
+                    >
+                        <Download className="w-4 h-4" />
+                        <span>Resume</span>
+                    </a>
 
                 </div>
             )}

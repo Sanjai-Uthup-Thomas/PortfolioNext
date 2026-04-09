@@ -27,12 +27,6 @@ const SkillsSection = () => {
             {/* Background */}
             <div className="absolute inset-0 -z-10 " />
 
-            {/* Parallax Glow */}
-            {/* <div className="absolute inset-0 -z-10 overflow-hidden">
-                <div className="absolute w-[600px] h-[600px]  rounded-full blur-[140px] animate-pulse top-[-150px] left-[-150px]" />
-                <div className="absolute w-[500px] h-[500px]  rounded-full blur-[140px] animate-pulse bottom-[-150px] right-[-150px]" />
-            </div> */}
-
             {/* Heading */}
             <div className="text-center mb-8 relative z-10">
                 <h2 className="text-6xl font-bold bg-gradient-to-r from-purple-800 via-pink-400 to-purple-800 bg-clip-text text-transparent tracking-tight">
@@ -47,7 +41,7 @@ const SkillsSection = () => {
             <div className=" relative z-10">
                 <div className="">
 
-                    <div className="space-y-14">
+                    <div className="space-y-6">
                         <InfiniteRow items={row1} />
                         <InfiniteRow items={row2} reverse />
                         <InfiniteRow items={row3} />

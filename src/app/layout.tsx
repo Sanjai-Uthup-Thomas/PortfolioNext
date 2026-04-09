@@ -15,7 +15,6 @@ export const metadata: Metadata = {
     ],
     apple: "/apple-touch-icon.png",
   },
-  manifest: "/site.webmanifest",
   keywords: [
   "Sanjai Uthup Thomas",
   "Sanjai Uthup",

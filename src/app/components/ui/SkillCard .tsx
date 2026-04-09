@@ -39,7 +39,7 @@ export const SkillCard = ({ skill }: any) => {
       <div className="absolute inset-0 rounded-2xl bg-gradient-to-r 
       from-purple-600/20 to-pink-500/20 opacity-0
       blur-xl transition duration-500" />
-      <Image src={skill.logo} alt={skill.name} className="w-7 h-7 z-10" width={25} height={25} />
+      <Image src={skill.logo} alt={skill.name} className="z-10" width={25} height={25} />
 
       <span className="text-white font-medium z-10 whitespace-nowrap">
         {skill.name}
