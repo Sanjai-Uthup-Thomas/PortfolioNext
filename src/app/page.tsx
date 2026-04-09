@@ -33,10 +33,24 @@ import PROFILE_IMAGE from '../../public/profile-image.jpg';
 import { CheckCircle } from "lucide-react";
 import Image, { StaticImageData } from 'next/image';
 import toast, { Toaster } from 'react-hot-toast';
+import SkillsSection from './components/ui/SkillsSection';
+import Particles from './components/ui/Particles';
+import FloatingContact from './components/ui/FloatingContact';
+import Navbar from './components/ui/Navbar';
+import Footer from './components/ui/Footer';
 // Form schema using Zod
 const contactFormSchema = z.object({
     name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-    email: z.string().email({ message: "Invalid email address." }),
+    email: z
+        .string()
+        .trim()
+        .toLowerCase()
+        .min(1, { message: "Email is required" })
+        .email({ message: "Enter a valid email address" })
+        .refine(
+            (email) => !["tempmail.com", "mailinator.com"].some((d) => email.endsWith(d)),
+            { message: "Temporary emails are not allowed" }
+        ),
     subject: z.string().min(1, { message: "Subject is required." }),
     message: z.string().min(10, { message: "Message must be at least 10 characters." }),
 });
@@ -60,100 +74,6 @@ const itemVariants = {
         opacity: 1,
     },
 };
-
-// Reusable components
-const SectionHeading = ({ children, className }: { children: React.ReactNode, className?: string }) => (
-    <motion.h2
-        variants={itemVariants}
-        className={`text-4xl font-bold text-purple-400 dark:text-purple-300 mb-6 flex items-center justify-center ${className}`}
-    >
-        {children}
-    </motion.h2>
-);
-
-const SubHeading = ({ children, className }: { children: React.ReactNode, className?: string }) => (
-    <motion.h3
-        variants={itemVariants}
-        className={`text-2xl font-semibold text-gray-200 dark:text-gray-100 mb-4 ${className}`}
-    >
-        {children}
-    </motion.h3>
-);
-
-const Paragraph = ({ children, className }: { children: React.ReactNode, className?: string }) => (
-    <motion.p
-        variants={itemVariants}
-        className={`text-gray-300 dark:text-gray-400 mb-6 leading-relaxed text-lg ${className}`}
-    >
-        {children}
-    </motion.p>
-);
-
-const SkillBadge = ({ children, className }: { children: React.ReactNode, className?: string }) => (
-    <motion.span
-        variants={itemVariants}
-        className={`inline-block bg-purple-800 dark:bg-purple-900 text-purple-200 dark:text-purple-100 px-4 py-2 rounded-full text-sm font-semibold mr-3 mb-3 transition-all duration-300 hover:scale-105 shadow-md border border-purple-700 dark:border-purple-600 ${className}`}
-    >
-        {children}
-    </motion.span>
-);
-
-const ProjectCard = ({
-    title,
-    technologies,
-    description,
-    githubLink,
-    imageUrl
-}: {
-    title: string;
-    technologies: string[];
-    description: string;
-    githubLink: string;
-    imageUrl?: StaticImageData;
-}) => (
-    <motion.div
-        variants={itemVariants}
-        className="bg-gray-900 dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8 transition-all duration-300 hover:shadow-xl hover:scale-[1.02] border border-gray-800 dark:border-gray-700 group backdrop-blur-md bg-opacity-80"
-    >
-        <div className="relative overflow-hidden rounded-md mb-4">
-            {imageUrl && (
-                <Image
-                    width={100}
-                    height={100}
-                    src={imageUrl}
-                    alt={title}
-                    className="rounded-md w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110 brightness-75"
-                />
-            )}
-            <div className="absolute inset-0 bg-black bg-opacity-0 rounded-md flex items-center justify-center transition-all duration-500 group-hover:bg-opacity-50">
-                <h3 className="text-2xl font-semibold text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                    {title}
-                </h3>
-            </div>
-        </div>
-        <div className="flex flex-wrap mb-3">
-            {technologies.map((tech) => (
-                <span
-                    key={tech}
-                    className="bg-gray-800 dark:bg-gray-700 text-gray-300 dark:text-gray-400 px-3 py-1 rounded-full text-xs font-medium mr-2 mb-1 border border-gray-700"
-                >
-                    {tech}
-                </span>
-            ))}
-        </div>
-        <p className="text-gray-400 dark:text-gray-300 mb-4 leading-relaxed">{description}</p>
-        <a
-            href={githubLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-purple-400 dark:text-purple-300 hover:underline flex items-center transition-colors duration-200"
-        >
-            <Github className="mr-2 w-5 h-5" />
-            <span className='text-lg'>GitHub</span>
-        </a>
-    </motion.div>
-);
-
 const SanjaiPortfolio = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [activeSection, setActiveSection] = useState('home');
@@ -221,391 +141,795 @@ const SanjaiPortfolio = () => {
 
 
     return (
-        <div className="bg-gradient-to-br from-gray-900 via-black to-gray-900 min-h-screen overflow-x-hidden relative">
+
+        <div id="home" className="bg-gradient-to-br from-gray-900 via-black to-gray-900 min-h-screen overflow-x-hidden relative">
             {/* Background Image */}
+            <Navbar />
             <div className="absolute inset-0 bg-fixed bg-center bg-cover opacity-10 z-0"
                 style={{ backgroundImage: `url(${BGImage})` }}
             />
 
-            <div className="container mx-auto px-4 py-10 relative z-10">
-                <motion.div
-                    ref={introRef}
-                    className="text-center mb-16 flex flex-col items-center justify-center"
-                    initial="hidden"
-                    variants={containerVariants}
-                    animate="visible"
+            <div className="container mx-auto px-4 py-2 relative z-10">
+                <Particles />
+                <section
+                    id="home"
+                    className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 pt-20 md:pt-7"
                 >
-                    <motion.div variants={itemVariants}>
-                        <Image
-                            width={100}
-                            height={100}
-                            src={PROFILE_IMAGE}
-                            alt="Sanjai Uthup Thomas"
-                            className="rounded-full w-48 h-48 border-4 border-purple-500 dark:border-purple-600 shadow-xl mb-6 mx-auto"
-                        />
-                        <h1 className="text-5xl font-bold text-white mb-4">
-                            Sanjai Uthup Thomas
-                        </h1>
-                        <p className="text-2xl text-gray-300 mb-6">
-                            Full Stack Developer
-                        </p>
-                        <div className="flex justify-center gap-8 flex-wrap">
-                            <a
-                                href="mailto:sanjaiuthupthomas@gmail.com"
-                                className="text-purple-400 dark:text-purple-300 hover:underline flex items-center transition-colors duration-200 text-lg"
-                            >
-                                <Mail className="mr-2 w-6 h-6" />
-                                <span>Email</span>
-                            </a>
-                            <a
-                                href="https://linkedin.com/in/sanjai-uthup-thomas-781407131"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-purple-400 dark:text-purple-300 hover:underline flex items-center transition-colors duration-200 text-lg"
-                            >
-                                <Linkedin className="mr-2 w-6 h-6" />
-                                <span>LinkedIn</span>
-                            </a>
-                            <a
-                                href="https://github.com/Sanjai-Uthup-Thomas"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-purple-400 dark:text-purple-300 hover:underline flex items-center transition-colors duration-200 text-lg"
-                            >
-                                <Github className="mr-2 w-6 h-6" />
-                                <span>GitHub</span>
-                            </a>
-                        </div>
-                    </motion.div>
-                    <motion.div variants={itemVariants} className="mt-12">
-                        <Button
-                            variant="outline"
-                            size="lg"
-                            className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 font-semibold text-lg flex items-center border-2 border-purple-500 dark:border-purple-400"
-                            onClick={() => {
-                                setIsLoading(true);
-                                setTimeout(() => {
-                                    setIsLoading(false);
-                                    const aboutSection = document.getElementById('about');
-                                    if (aboutSection) {
-                                        aboutSection.scrollIntoView({ behavior: 'smooth' });
-                                    }
-                                }, 1500);
-                            }}
+                    {/* 🌈 Background Glow */}
+                    <div className="absolute inset-0" />
+
+                    <motion.div
+                        className="relative z-10 text-center max-w-3xl pt-10"
+                        initial="hidden"
+                        animate="visible"
+                        variants={containerVariants}
+                    >
+                        {/* 👤 PROFILE IMAGE */}
+                        <motion.div variants={itemVariants} className="mb-8 flex justify-center">
+                            <div className="relative group">
+
+                                {/* Glow */}
+                                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 blur-xl opacity-40 group-hover:opacity-60 transition duration-300" />
+
+                                {/* Image */}
+                                <Image
+                                    src={PROFILE_IMAGE}
+                                    alt="Sanjai Uthup Thomas"
+                                    width={160}
+                                    height={160}
+                                    className="relative w-36 h-36 md:w-40 md:h-40 object-cover rounded-full 
+          border border-white/10 shadow-2xl transition duration-300 group-hover:scale-105"
+                                />
+
+                                {/* Subtle Overlay */}
+                                <div className="absolute inset-0 rounded-full bg-black/20" />
+                            </div>
+                        </motion.div>
+
+                        {/* 🔥 AVAILABILITY */}
+                        <motion.div
+                            variants={itemVariants}
+                            className="mb-4 inline-flex items-center gap-2 text-sm text-green-400"
                         >
-                            {isLoading ? (
-                                <>
-                                    <Loader2 className="mr-2 h-6 w-6 animate-spin" />
-                                    Loading...
-                                </>
-                            ) : (
-                                <>
-                                    About Me <ArrowRight className="ml-2 w-6 h-6" />
-                                </>
-                            )}
-                        </Button>
+                            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                            Available for work
+                        </motion.div>
+
+                        {/* 🧠 HEADLINE */}
+                        <motion.h1
+                            variants={itemVariants}
+                            className="text-5xl md:text-6xl font-bold text-white mb-4 leading-tight"
+                        >
+                             Hi, I&apos;m Sanjai
+                        </motion.h1>
+
+                        {/* ✨ ROLE */}
+                        <motion.p
+                            variants={itemVariants}
+                            className="text-xl text-purple-400 mb-6"
+                        >
+                            Full Stack Developer
+                        </motion.p>
+
+                        {/* 💬 DESCRIPTION */}
+                        <motion.p
+                            variants={itemVariants}
+                            className="text-white/60 text-lg leading-relaxed mb-10"
+                        >
+                            I build scalable full-stack applications with clean architecture,
+                            focusing on performance, reliability, and real-world impact.
+                        </motion.p>
+
+                        {/* 🔥 CTA */}
+                        <motion.div
+                            variants={itemVariants}
+                            className="flex justify-center gap-4 flex-wrap"
+                        >
+                            <Button
+                                className="bg-gradient-to-r from-purple-600 to-pink-500 px-8 py-3 rounded-full shadow-lg hover:scale-105 transition"
+                                onClick={() =>
+                                    document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })
+                                }
+                            >
+                                View Projects →
+                            </Button>
+
+                            <Button
+                                variant="outline"
+                                className="px-8 py-3 rounded-full border-white/20 hover:bg-white/10"
+                                onClick={() =>
+                                    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
+                                }
+                            >
+                                Contact Me
+                            </Button>
+                        </motion.div>
+
+                        {/* 🔗 SOCIAL */}
+                        <motion.div
+                            variants={itemVariants}
+                            className="mt-7 flex justify-center gap-6 text-white/40"
+                        >
+                            <a href="mailto:sanjaiuthupthomas@gmail.com" className="hover:text-white transition">
+                                <Mail className="w-5 h-5" />
+                            </a>
+                            <a href="https://linkedin.com/in/sanjai-uthup-thomas-781407131" target="_blank" className="hover:text-white transition">
+                                <Linkedin className="w-5 h-5" />
+                            </a>
+                            <a href="https://github.com/Sanjai-Uthup-Thomas" target="_blank" className="hover:text-white transition">
+                                <Github className="w-5 h-5" />
+                            </a>
+                        </motion.div>
                     </motion.div>
-                </motion.div>
+                </section>
+                <section id="about" className="pt-20 md:pt-32 relative overflow-hidden">
+                    {/* Subtle Background */}
+                    <div className="absolute inset-0 -z-10" />
 
-                <section id="about">
-                    <SectionHeading className="text-4xl">
-                        <Users className="mr-3 w-8 h-8 text-purple-400" />
-                        About Me
-                    </SectionHeading>
-                    <div className="max-w-6xl mx-auto px-4 lg:px-0">
-                        <Paragraph className="text-lg mb-6">
-                            I&apos;m a Full Stack Developer with a passion for creating high-performance web and mobile applications. I specialize in building scalable backend systems, REST/gRPC APIs, and microservices using Node.js, Express.js, and NestJS. With a strong foundation in TypeScript and modern backend architecture, I&apos;m dedicated to crafting clean, efficient, and maintainable code.
-                        </Paragraph>
+                    {/* Soft Glow */}
+                    <div className="absolute inset-0 " />
 
-                        <Paragraph className="text-lg mb-6">
-                            My frontend expertise lies in developing intuitive user interfaces using React.js and React Native. I focus on performance optimization, form validation (React Hook Form), and state management (Redux) to deliver seamless user experiences. I&apos;m also experienced in containerizing services with Docker, setting up CI/CD pipelines, and deploying production-ready applications.
-                        </Paragraph>
-
-                        <Paragraph className="text-lg">
-                            I&apos;m passionate about taking complete ownership of full-stack projects, from the initial concept to the final launch. I thrive on solving complex problems, collaborating with cross-functional teams, and continuously learning and adapting to new technologies.
-                        </Paragraph>
-
+                    {/* Heading */}
+                    {/* Heading */}
+                    <div className="text-center mb-8 relative z-10">
+                        <h2 className="text-6xl font-bold bg-gradient-to-r from-purple-800 via-pink-400 to-purple-800 bg-clip-text text-transparent tracking-tight">
+                            About Me
+                        </h2>
+                        <p className="text-white/40 mt-4 text-sm tracking-widest">
+                            WHO I AM & WHAT I DO
+                        </p>
                     </div>
 
-                </section>
+                    {/* Content */}
+                    <div className="max-w-4xl mx-auto px-4 text-center">
 
-                <section id="skills">
-                    <SectionHeading className="text-4xl">
-                        <Code className="mr-3 w-8 h-8 text-purple-400" />
-                        Technical Skills
-                    </SectionHeading>
-                    <div className=" max-w-6xl mx-auto px-4 lg:px-0 flex flex-wrap justify-center">
-                        <SkillBadge className="text-lg">JavaScript</SkillBadge>
-                        <SkillBadge className="text-lg">TypeScript</SkillBadge>
-                        <SkillBadge className="text-lg">React.js</SkillBadge>
-                        <SkillBadge className="text-lg">React Native</SkillBadge>
-                        <SkillBadge className="text-lg">HTML</SkillBadge>
-                        <SkillBadge className="text-lg">CSS</SkillBadge>
-                        <SkillBadge className="text-lg">Tailwind</SkillBadge>
-                        <SkillBadge className="text-lg">Bootstrap</SkillBadge>
-                        <SkillBadge className="text-lg">Node.js</SkillBadge>
-                        <SkillBadge className="text-lg">Express.js</SkillBadge>
-                        <SkillBadge className="text-lg">NestJS</SkillBadge>
-                        <SkillBadge className="text-lg">REST APIs</SkillBadge>
-                        <SkillBadge className="text-lg">gRPC</SkillBadge>
-                        <SkillBadge className="text-lg">JWT</SkillBadge>
-                        <SkillBadge className="text-lg">OAuth2</SkillBadge>
-                        <SkillBadge className="text-lg">MongoDB</SkillBadge>
-                        <SkillBadge className="text-lg">PostgreSQL</SkillBadge>
-                        <SkillBadge className="text-lg">MySQL</SkillBadge>
-                        <SkillBadge className="text-lg">Mongoose</SkillBadge>
-                        <SkillBadge className="text-lg">TypeORM</SkillBadge>
-                        <SkillBadge className="text-lg">Sequelize</SkillBadge>
-                        <SkillBadge className="text-lg">Google</SkillBadge>
-                        <SkillBadge className="text-lg">Facebook</SkillBadge>
-                        <SkillBadge className="text-lg">Apple Sign-in</SkillBadge>
-                        <SkillBadge className="text-lg">Stripe</SkillBadge>
-                        <SkillBadge className="text-lg">Razorpay</SkillBadge>
-                        <SkillBadge className="text-lg">PayPal</SkillBadge>
-                        <SkillBadge className="text-lg">Microservices</SkillBadge>
-                        <SkillBadge className="text-lg">MVC</SkillBadge>
-                        <SkillBadge className="text-lg">Docker</SkillBadge>
-                        <SkillBadge className="text-lg">GitHub Actions</SkillBadge>
-                        <SkillBadge className="text-lg">Nginx</SkillBadge>
-                        <SkillBadge className="text-lg">Git</SkillBadge>
-                        <SkillBadge className="text-lg">Postman</SkillBadge>
-                        <SkillBadge className="text-lg">AWS</SkillBadge>
-                        <SkillBadge className="text-lg">Firebase</SkillBadge>
-                        <SkillBadge className="text-lg">Netlify</SkillBadge>
-                        <SkillBadge className="text-lg">Render</SkillBadge>
+                        <p className="text-white/80 text-lg leading-relaxed">
+                            I’m a <span className="text-white font-semibold">Full Stack Developer</span> focused on building
+                            <span className="text-purple-400 font-medium"> scalable backend systems</span> and
+                            high-performance applications. I specialize in
+                            <span className="text-purple-400 font-medium"> Node.js, NestJS, and microservices architecture</span>,
+                            with a strong emphasis on clean code, system design, and performance.
+                        </p>
+
+                        <p className="text-white/60 text-lg leading-relaxed mt-6">
+                            On the frontend, I create intuitive user experiences using
+                            <span className="text-pink-400 font-medium"> React.js and React Native</span>, ensuring smooth performance
+                            and maintainable architecture across applications.
+                        </p>
+
+                        <p className="text-white/50 text-base leading-relaxed mt-6">
+                            I enjoy taking ownership of projects end-to-end — from design to deployment —
+                            continuously learning and building systems that are reliable, efficient, and production-ready.
+                        </p>
+
                     </div>
                 </section>
+                <SkillsSection />
+                <section id="experience" className="pt-20 md:pt-32 relative overflow-hidden">
 
-                <section id="experience" className="py-12 bg-gray-950 text-white">
-                    <div className="max-w-4xl mx-auto px-4">
-                        <SectionHeading className="text-4xl mb-10 flex items-center">
-                            <Briefcase className="mr-3 w-8 h-8 text-purple-400" />
-                            Experience
-                        </SectionHeading>
+                    {/* Background */}
+                    <div className="absolute inset-0 -z-10 " />
 
-                        {/* Job 1 */}
-                        <div className="bg-gray-900 rounded-2xl p-6 shadow-lg mb-8 transition-all hover:scale-[1.01] hover:shadow-purple-500/20">
-                            <SubHeading className="text-2xl font-semibold text-purple-300 mb-1">
-                                Software Engineer
-                            </SubHeading>
-                            <p className="text-gray-400 text-lg mb-4">NewAgeSMB, Kochi (2023 – Present)</p>
-                            <ul className="space-y-3">
-                                {[
-                                    "Led development of cross-platform mobile apps using React Native, focusing on performance and user experience.",
-                                    "Contributed to web applications using React.js and Next.js, with responsive UI built using Tailwind CSS and Bootstrap.",
-                                    "Developed scalable backend services and APIs using Node.js, Express.js, and NestJS.",
-                                    "Integrated third-party APIs, social login (Google, Facebook), and secure payment gateways.",
-                                    "Collaborated with designers, testers, and backend teams to deliver production-ready features across platforms.",
-                                ].map((item, index) => (
-                                    <li key={index} className="flex items-start text-gray-300 text-base">
-                                        <CheckCircle className="w-5 h-5 text-purple-400 mr-3 mt-[2px]" />
-                                        <span>{item}</span>
-                                    </li>
-                                ))}
-                            </ul>
+                    {/* Glow */}
+                    <div className="absolute inset-0 " />
+
+                    <div className="max-w-4xl mx-auto px-4 relative z-10">
+
+                        {/* 🔥 Heading (MATCHED STYLE) */}
+                        <div className="text-center mb-20">
+                            <h2 className="text-6xl font-bold bg-gradient-to-r from-purple-800 via-pink-400 to-purple-800 bg-clip-text text-transparent tracking-tight">
+                                Experience
+                            </h2>
+                            <p className="text-white/40 mt-4 text-sm tracking-widest">
+                                WHERE I’VE WORKED & WHAT I BUILT
+                            </p>
                         </div>
 
-                        {/* Job 2 */}
-                        <div className="bg-gray-900 rounded-2xl p-6 shadow-lg transition-all hover:scale-[1.01] hover:shadow-purple-500/20">
-                            <SubHeading className="text-2xl font-semibold text-purple-300 mb-1">
-                                Freelance Web Developer
-                            </SubHeading>
-                            <p className="text-gray-400 text-lg mb-4">Kochi (Self-employed) (2019 – 2022)</p>
-                            <ul className="space-y-3">
-                                {[
-                                    "Delivered mobile-friendly websites using HTML, CSS, JavaScript, and React.",
-                                    "Handled UI/UX design, backend APIs, and basic deployment for local businesses.",
-                                ].map((item, index) => (
-                                    <li key={index} className="flex items-start text-gray-300 text-base">
-                                        <CheckCircle className="w-5 h-5 text-purple-400 mr-3 mt-[2px]" />
-                                        <span>{item}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
-                </section>
+                        {/* 🧊 Experience Container */}
+                        <div className="space-y-16">
 
+                            {/* Job 1 */}
+                            <div className="group">
 
-
-                <section id="projects">
-                    <SectionHeading className="text-4xl">
-                        <Laptop className="mr-3 w-8 h-8 text-purple-400" />
-                        Projects
-                    </SectionHeading>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <ProjectCard
-                            title="DevX API Suite (ongoing)"
-                            technologies={[
-                                'NestJS',
-                                'TypeScript',
-                                'PostgreSQL',
-                                'gRPC',
-                                'Docker',
-                                'CI/CD',
-                                'GitHub Actions',
-                                'Swagger',
-                            ]}
-                            description="Architecting a scalable, production-ready backend system using modern microservice principles. Highlights: Built modular microservices for Auth, User, and Notification systems with inter-service communication via gRPC. Leveraged NestJS for its modular structure, dependency injection, and maintainability. Used PostgreSQL with TypeORM for relational data modeling and efficient queries. Containerized each service using Docker with isolated dev environments and service orchestration. Set up CI/CD pipelines with GitHub Actions for automated builds, testing, and deployments. Integrated Swagger for real-time API documentation and easier developer collaboration. Designed with scalability, observability, and long-term maintainability in mind."
-                            githubLink="https://github.com/Sanjai-Uthup-Thomas/Chat-Backend"
-                            imageUrl={DEVX_PROJECT_IMAGE}
-                        />
-
-                        <ProjectCard
-                            title="Social Media App"
-                            technologies={[
-                                'React',
-                                'Redux',
-                                'Node.js',
-                                'Socket.io',
-                                'MongoDB',
-                                'JWT',
-                                'React Hook Form',
-                            ]}
-                            description="Built a feature-rich social media platform with real-time interactivity and a modern frontend. Highlights: Developed a responsive frontend using React and global state management with Redux. Used React Hook Form for efficient and scalable form validation across login, signup, and post modules. Enabled real-time chat and notifications using Socket.io and MongoDB change streams. Implemented role-based authentication using JWT and protected API routes. Designed a custom feed algorithm for trending posts and user suggestions based on hashtags and interests. Features include: user profiles, posts with likes/comments, follow system, and search by tags. Optimized backend APIs for scalability and deployed cloud-ready architecture."
-                            githubLink="https://github.com/Sanjai-Uthup-Thomas/Social-media"
-                            imageUrl={SOCIAL_MEDIA_PROJECT_IMAGE}
-                        />
-
-                        <ProjectCard
-                            title="Watchmen – E-commerce App"
-                            technologies={[
-                                'Node.js',
-                                'Express',
-                                'MongoDB',
-                                'Twilio',
-                                'Razorpay',
-                                'PayPal',
-                            ]}
-                            description="Developed a full-featured e-commerce platform with an admin dashboard and customer-facing website. Key features include: OTP verification system using Twilio SMS API for secure user authentication. Custom Admin panel to manage products, categories, coupons, users, and orders. Multiple payment gateways integrated: Razorpay, and PayPal. Dynamic coupon engine with expiry dates, usage limits, and discount strategies. Referral system enabling user-to-user invite rewards and tracking. Complete Order lifecycle management with cancellation, return, and status updates. Automated email notifications for order updates, success, and failure cases. Clean RESTful API structure."
-                            githubLink="https://github.com/Sanjai-Uthup-Thomas/Watchmen"
-                            imageUrl={WATCHMEN_PROJECT_IMAGE}
-                        />
-                    </div>
-                </section>
-                <section id="contact" className="py-12 text-white">
-                    <div className="max-w-6xl mx-auto px-4">
-                        <SectionHeading className="text-4xl mb-10 flex items-center justify-center">
-                            <Mail className="mr-3 w-8 h-8 text-purple-400" />
-                            Contact Me
-                        </SectionHeading>
-
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                            {/* Contact Form */}
-                            <div className="relative rounded-xl bg-gray-900 dark:bg-gray-800 shadow-xl p-8 backdrop-blur-md bg-opacity-80 border border-purple-500/20">
-                                <h3 className="text-3xl font-bold text-white mb-8 flex items-center gap-3">
-                                    <Mail className="mr-3 w-8 h-8 text-purple-400 animate-pulse" /> Send a Message
+                                {/* Role */}
+                                <h3 className="text-3xl font-semibold text-white tracking-tight">
+                                    Software Engineer
                                 </h3>
+
+                                {/* Company + Duration */}
+                                <p className="text-purple-400 mt-2 text-sm tracking-wide">
+                                    NewAgeSMB • Kochi • 2023 – 2025
+                                </p>
+
+                                {/* Divider */}
+                                <div className="w-16 h-[2px] bg-gradient-to-r from-purple-500 to-pink-500 mt-4 mb-6" />
+
+                                {/* Description */}
+                                <div className="space-y-4 text-white/70 leading-relaxed text-[15px]">
+                                    <p>
+                                        Led development of cross-platform mobile applications using React Native,
+                                        focusing on performance, scalability, and seamless user experience.
+                                    </p>
+
+                                    <p>
+                                        Designed and built scalable backend services and APIs using Node.js,
+                                        Express.js, and NestJS with clean architecture principles.
+                                    </p>
+
+                                    <p>
+                                        Developed responsive web applications using React.js, Next.js, and Tailwind CSS.
+                                    </p>
+
+                                    <p>
+                                        Integrated third-party APIs, authentication systems, and secure payment gateways.
+                                    </p>
+
+                                    <p>
+                                        Collaborated closely with cross-functional teams to deliver production-ready features
+                                        and maintain high code quality.
+                                    </p>
+                                </div>
+
+                            </div>
+
+                            {/* Job 2 */}
+                            <div className="group">
+
+                                {/* Role */}
+                                <h3 className="text-3xl font-semibold text-white tracking-tight">
+                                    Freelance Web Developer
+                                </h3>
+
+                                {/* Company + Duration */}
+                                <p className="text-purple-400 mt-2 text-sm tracking-wide">
+                                    Self-employed • Kochi • 2019 – Present
+                                </p>
+
+                                {/* Divider */}
+                                <div className="w-16 h-[2px] bg-gradient-to-r from-purple-500 to-pink-500 mt-4 mb-6" />
+
+                                {/* Description */}
+                                <div className="space-y-4 text-white/70 leading-relaxed text-[15px]">
+                                    <p>
+                                        Built responsive and modern websites using JavaScript and React,
+                                        focusing on performance and usability.
+                                    </p>
+
+                                    <p>
+                                        Managed end-to-end project delivery including UI/UX design, backend development,
+                                        and deployment for multiple clients.
+                                    </p>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+                <section id="projects" className="pt-20 md:pt-32 relative overflow-hidden">
+
+                    {/* Heading */}
+                    <div className="text-center mb-12 md:mb-32">
+                        <h2 className="text-6xl font-bold bg-gradient-to-r from-purple-800 via-pink-400 to-purple-800 bg-clip-text text-transparent tracking-tight">
+                            Projects
+                        </h2>
+                        <p className="text-white/40 mt-4 text-sm tracking-widest">
+                            SELECTED WORK & SYSTEMS I’VE BUILT
+                        </p>
+                    </div>
+
+                    <div className="max-w-6xl mx-auto px-4 space-y-28">
+
+                        {/* 🔥 Project 1 */}
+                        <div className="group grid md:grid-cols-2 gap-10 items-stretch">
+                            {/* LEFT */}
+                            <div className="flex flex-col justify-center">
+                                <h3 className="text-3xl font-semibold text-white">
+                                    DevX API Suite <span className="text-white/40 text-lg">(Ongoing)</span>
+                                </h3>
+
+                                <p className="text-purple-400 text-sm mt-2">
+                                    NestJS • PostgreSQL • gRPC • Docker • CI/CD
+                                </p>
+
+                                <div className="w-16 h-[2px] bg-gradient-to-r from-purple-500 to-pink-500 mt-4 mb-6" />
+
+                                <p className="text-white/80 leading-relaxed">
+                                    Designed and building a production-ready microservices architecture with modular services
+                                    for authentication, users, and notifications.
+                                </p>
+
+                                <div className="mt-6 space-y-2 text-white/60 text-sm">
+                                    <p>• gRPC-based inter-service communication</p>
+                                    <p>• Dockerized services</p>
+                                    <p>• CI/CD pipelines</p>
+                                </div>
+
+                                {/* CTA */}
+                                <div className="flex items-center gap-6 mt-6">
+                                    <a
+                                        href="https://github.com/Sanjai-Uthup-Thomas/Chat-Backend"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-sm text-purple-400 hover:text-pink-400 transition"
+                                    >
+                                        View Code →
+                                    </a>
+
+                                    {/* ✅ FIX: Use real link OR hide if not available */}
+                                    <a
+                                        href="#"
+                                        onClick={(e) => e.preventDefault()}
+                                        className="text-sm text-white/40 cursor-not-allowed"
+                                    >
+                                        Live Demo (Coming Soon)
+                                    </a>
+                                </div>
+
+                            </div>
+
+                            {/* RIGHT (AUTO HEIGHT IMAGE) */}
+                            <div className="relative w-full h-full min-h-[250px]">
+                                <Image
+                                    src={DEVX_PROJECT_IMAGE}
+                                    alt="DevX Project"
+                                    fill
+                                    className="rounded-2xl object-cover transition duration-500 group-hover:scale-105 opacity-80 group-hover:opacity-100"
+                                />
+                            </div>
+
+                        </div>
+
+                        {/* 🔥 Project 2 */}
+                        <div className="group grid md:grid-cols-2 gap-10 items-stretch">
+
+                            <div className="flex flex-col justify-center">
+                                <h3 className="text-3xl font-semibold text-white">
+                                    Social Media App
+                                </h3>
+
+                                <p className="text-purple-400 text-sm mt-2">
+                                    React • Node.js • Socket.io • MongoDB • JWT
+                                </p>
+
+                                <div className="w-16 h-[2px] bg-gradient-to-r from-purple-500 to-pink-500 mt-4 mb-6" />
+
+                                <p className="text-white/80 leading-relaxed">
+                                    Built a real-time social platform with chat and notifications.
+                                </p>
+
+                                <div className="mt-6 space-y-2 text-white/60 text-sm">
+                                    <p>• Real-time messaging</p>
+                                    <p>• JWT authentication</p>
+                                    <p>• Feed optimization</p>
+                                </div>
+
+                                <div className="flex items-center gap-6 mt-6">
+                                    <a
+                                        href="https://github.com/Sanjai-Uthup-Thomas/Social-media"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-sm text-purple-400 hover:text-pink-400 transition"
+                                    >
+                                        View Code →
+                                    </a>
+
+                                    {/* ✅ FIX: Use real link OR hide if not available */}
+                                    <a
+                                        href="#"
+                                        onClick={(e) => e.preventDefault()}
+                                        className="text-sm text-white/40 cursor-not-allowed"
+                                    >
+                                        Live Demo (Not working)
+                                    </a>
+                                </div>
+
+                            </div>
+
+                            <div className="relative w-full h-full min-h-[250px]">
+                                <Image
+                                    src={SOCIAL_MEDIA_PROJECT_IMAGE}
+                                    alt="Social Media"
+                                    fill
+                                    className="rounded-2xl object-cover transition duration-500 group-hover:scale-105 opacity-80 group-hover:opacity-100"
+                                />
+                            </div>
+
+                        </div>
+
+                        {/* 🔥 Project 3 */}
+                        <div className="group grid md:grid-cols-2 gap-10 items-stretch">
+
+                            <div className="flex flex-col justify-center">
+                                <h3 className="text-3xl font-semibold text-white">
+                                    Watchmen – E-commerce
+                                </h3>
+
+                                <p className="text-purple-400 text-sm mt-2">
+                                    Node.js • MongoDB • Razorpay • PayPal • Twilio
+                                </p>
+
+                                <div className="w-16 h-[2px] bg-gradient-to-r from-purple-500 to-pink-500 mt-4 mb-6" />
+
+                                <p className="text-white/80 leading-relaxed">
+                                    Developed a full-featured e-commerce platform with payments and admin dashboard.
+                                </p>
+
+                                <div className="mt-6 space-y-2 text-white/60 text-sm">
+                                    <p>• Multi-payment integration</p>
+                                    <p>• OTP authentication</p>
+                                    <p>• Coupon system</p>
+                                </div>
+
+                                <div className="flex items-center gap-6 mt-6">
+
+                                    <a
+                                        href="https://github.com/Sanjai-Uthup-Thomas/Watchmen"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-sm text-purple-400 hover:text-pink-400 transition"
+                                    >
+                                        View Code →
+                                    </a>
+
+                                    {/* ✅ FIX: Use real link OR hide if not available */}
+                                    <a
+                                        href="#"
+                                        onClick={(e) => e.preventDefault()}
+                                        className="text-sm text-white/40 cursor-not-allowed"
+                                    >
+                                        Live Demo (Not Working)
+                                    </a>
+                                </div>
+
+                            </div>
+
+                            <div className="relative w-full h-full min-h-[250px]">
+                                <Image
+                                    src={WATCHMEN_PROJECT_IMAGE}
+                                    alt="Watchmen"
+                                    fill
+                                    className="rounded-2xl object-cover transition duration-500 group-hover:scale-105 opacity-80 group-hover:opacity-100"
+                                />
+                            </div>
+
+                        </div>
+
+                    </div>
+                </section>
+                <section id="contact" className="pt-20 md:pt-32 relative overflow-hidden text-white">
+
+                    {/* Background */}
+                    <div className="absolute inset-0 -z-10 " />
+                    <div className="absolute inset-0 " />
+
+                    <div className="max-w-6xl mx-auto px-4">
+
+                        {/* Heading */}
+                        <div className="text-center mb-24">
+                            <h2 className="text-6xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-purple-500 bg-clip-text text-transparent tracking-tight">
+                                Let’s Work Together
+                            </h2>
+                            <p className="text-white/40 mt-4 text-sm tracking-widest">
+                                BACKEND • FREELANCE • COLLABORATION
+                            </p>
+                        </div>
+
+                        <div className="grid lg:grid-cols-2 gap-16 items-start">
+                            {/* LEFT SIDE (REDUCED) */}
+                            <div className="space-y-1">
+
+                                <div className="space-y-4 max-w-lg">
+                                    <p className="text-xs tracking-widest text-purple-400 uppercase">
+                                        Full Stack Developer • Building Scalable Systems
+                                    </p>
+
+                                    <p className="text-white/80 leading-relaxed text-lg">
+                                        I build <span className="text-white font-medium">high-performance full-stack applications</span> —
+                                        combining <span className="text-purple-400">scalable backend systems</span>,
+                                        clean architecture, and intuitive user interfaces to create reliable, production-ready solutions.
+                                    </p>
+
+                                    <p className="text-white/50 text-sm">
+                                        From designing systems to deploying them in production, I focus on performance, maintainability, and real-world impact.
+                                        Let’s connect and build something meaningful.
+                                    </p>
+                                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full 
+    bg-green-500/10 border border-green-500/20 text-green-400 text-xs tracking-wide">
+
+                                        <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                                        Available for work
+                                    </div>
+
+                                </div>
+
+                                <div className="p-8  relative z-10">
+                                    <div className="space-y-6">
+                                        <div className="space-y-4 pt-4 text-white/70">
+
+                                            <a href="mailto:sanjaiuthupthomas@gmail.com" className="flex items-center gap-3 hover:text-white transition">
+                                                <Mail className="w-5 h-5 text-purple-400" />
+                                                sanjaiuthupthomas@gmail.com
+                                            </a>
+
+                                            <a href="tel:+919048856828" className="flex items-center gap-3 hover:text-white transition">
+                                                <Phone className="w-5 h-5 text-purple-400" />
+                                                +91 9048856828
+                                            </a>
+
+                                            <div className="flex items-center gap-3 text-white/50">
+                                                <MapPin className="w-5 h-5 text-purple-400" />
+                                                Kochi, India
+                                            </div>
+
+                                        </div>
+                                        {/* Social */}
+                                        <div className="flex gap-6 pt-4 text-sm text-white/60">
+
+                                            <a
+                                                href="https://github.com/Sanjai-Uthup-Thomas"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="group flex items-center gap-2 hover:text-white transition"
+                                            >
+                                                <Github className="w-5 h-5 transition group-hover:scale-110" />
+                                                GitHub →
+                                            </a>
+
+                                            <a
+                                                href="https://linkedin.com/in/sanjai-uthup-thomas-781407131"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="group flex items-center gap-2 hover:text-white transition"
+                                            >
+                                                <Linkedin className="w-5 h-5 transition group-hover:scale-110" />
+                                                LinkedIn →
+                                            </a>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+                            {/* RIGHT SIDE FORM (IMPROVED UX) */}
+                            <div className="relative px-10 z-10">
+                                <div className="pb-4 text-center">
+
+                                    {/* ✨ Small Tag */}
+                                    <p className="text-xs tracking-widest text-purple-400 mb-3">
+                                        GET IN TOUCH
+                                    </p>
+                                    {/* 💬 Subtitle */}
+                                    <p className="text-white/50 text-sm md:text-base max-w-md mx-auto leading-relaxed">
+                                        Have a project, idea, or opportunity? Feel free to reach out — I’ll get back to you soon.
+                                    </p>    
+
+                                </div>
                                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                                     {/* Name */}
-                                    <div className="group relative">
-                                        <label htmlFor="name" className="block text-sm font-medium text-gray-200 mb-1">
-                                            Name
-                                        </label>
+                                    <div className="relative group">
+
                                         <Controller
                                             name="name"
                                             control={control}
                                             render={({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    placeholder="Your Name"
-                                                    className={cn(
-                                                        "w-full bg-gray-800 text-white border border-gray-700 rounded-md px-4 py-3 transition-all duration-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 placeholder-gray-500",
-                                                        errors.name && "border-red-500 focus:ring-red-500"
-                                                    )}
-                                                    disabled={isSubmitting}
-                                                />
+                                                <>
+                                                    <Input
+                                                        {...field}
+                                                        placeholder=" "
+                                                        className={cn(
+                                                            "peer w-full bg-white/[0.02] text-white border border-white/[0.08] rounded-lg px-4 py-7 transition-all duration-300",
+                                                            "focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30",
+                                                            errors.name && "border-red-500 focus:ring-red-500/30"
+                                                        )}
+                                                        disabled={isSubmitting}
+                                                    />
+
+                                                    {/* Floating Label */}
+                                                    <label
+                                                        htmlFor="name"
+                                                        className={cn(
+                                                            "absolute left-4 text-sm transition-all duration-300 pointer-events-none top-1/2 ",
+
+                                                            // 🧠 If has value OR focused → float
+                                                            field.value
+                                                                ? "top-2 -translate-y-1/2 text-transparent peer-focus:top-2"
+                                                                : "top-1/2 -translate-y-1/2 text-white/40 peer-focus:top-2",
+
+                                                            // Focus color
+                                                            "peer-focus:top-2 peer-focus:text-xs peer-focus:text-purple-400",
+
+                                                            // 🔴 Error override
+                                                            errors.name && "top-2 text-xs text-red-500 peer-focus:top-2"
+                                                        )}
+                                                    >
+                                                        Name
+                                                    </label>
+                                                </>
                                             )}
                                         />
-                                        {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
-                                    </div>
 
+                                        {/* Error */}
+                                        {errors.name && (
+                                            <p className="text-red-500 text-sm mt-1">
+                                                {errors.name.message}
+                                            </p>
+                                        )}
+
+                                    </div>
                                     {/* Email */}
-                                    <div className="group relative">
-                                        <label htmlFor="email" className="block text-sm font-medium text-gray-200 mb-1">
-                                            Email
-                                        </label>
+                                    <div className="relative group">
+
                                         <Controller
                                             name="email"
                                             control={control}
                                             render={({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    type="email"
-                                                    placeholder="Your Email"
-                                                    className={cn(
-                                                        "w-full bg-gray-800 text-white border border-gray-700 rounded-md px-4 py-3 transition-all duration-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 placeholder-gray-500",
-                                                        errors.email && "border-red-500 focus:ring-red-500"
-                                                    )}
-                                                    disabled={isSubmitting}
-                                                />
+                                                <>
+                                                    <Input
+                                                        {...field}
+                                                        type="email"
+                                                        placeholder=" "
+                                                        className={cn(
+                                                            "peer w-full bg-white/[0.02] text-white border border-white/[0.08] rounded-lg px-4 py-7 transition-all duration-300",
+                                                            "focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30",
+                                                            errors.email && "border-red-500 focus:ring-red-500/30"
+                                                        )}
+                                                        disabled={isSubmitting}
+                                                    />
+
+                                                    {/* Floating Label */}
+                                                    <label
+                                                        htmlFor="email"
+                                                        className={cn(
+                                                            "absolute left-4 text-sm transition-all duration-300 pointer-events-none top-1/2 ",
+
+                                                            // 🧠 If has value OR focused → float
+                                                            field.value
+                                                                ? "top-2 -translate-y-1/2 text-transparent peer-focus:top-2"
+                                                                : "top-1/2 -translate-y-1/2 text-white/40 peer-focus:top-2",
+
+                                                            // Focus color
+                                                            "peer-focus:top-2 peer-focus:text-xs peer-focus:text-purple-400",
+
+                                                            // 🔴 Error override
+                                                            errors.email && "top-2 text-xs text-red-500 peer-focus:top-2"
+                                                        )}
+                                                    >
+                                                        Email
+                                                    </label>
+                                                </>
                                             )}
                                         />
-                                        {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
-                                    </div>
 
+                                        {/* Error */}
+                                        {errors.email && (
+                                            <p className="text-red-500 text-sm mt-1">
+                                                {errors.email.message}
+                                            </p>
+                                        )}
+
+                                    </div>
                                     {/* Subject */}
-                                    <div className="group relative">
-                                        <label htmlFor="subject" className="block text-sm font-medium text-gray-200 mb-1">
-                                            Subject
-                                        </label>
+                                    <div className="relative group">
+
                                         <Controller
                                             name="subject"
                                             control={control}
                                             render={({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    placeholder="Subject"
-                                                    className={cn(
-                                                        "w-full bg-gray-800 text-white border border-gray-700 rounded-md px-4 py-3 transition-all duration-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 placeholder-gray-500",
-                                                        errors.subject && "border-red-500 focus:ring-red-500"
-                                                    )}
-                                                    disabled={isSubmitting}
-                                                />
+                                                <>
+                                                    <Input
+                                                        {...field}
+                                                        placeholder=" "
+                                                        className={cn(
+                                                            "peer w-full bg-white/[0.02] text-white border border-white/[0.08] rounded-lg px-4 py-7 transition-all duration-300",
+                                                            "focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30",
+                                                            errors.subject && "border-red-500 focus:ring-red-500/30"
+                                                        )}
+                                                        disabled={isSubmitting}
+                                                    />
+
+                                                    {/* Floating Label */}
+                                                    <label
+                                                        htmlFor="subject"
+                                                        className={cn(
+                                                            "absolute left-4 text-sm transition-all duration-300 pointer-events-none top-1/2 ",
+
+                                                            // 🧠 If has value OR focused → float
+                                                            field.value
+                                                                ? "top-2 -translate-y-1/2 text-transparent peer-focus:top-2"
+                                                                : "top-1/2 -translate-y-1/2 text-white/40 peer-focus:top-2",
+
+                                                            // Focus color
+                                                            "peer-focus:top-2 peer-focus:text-xs peer-focus:text-purple-400",
+
+                                                            // 🔴 Error override
+                                                            errors.subject && "top-2 text-xs text-red-500 peer-focus:top-2"
+                                                        )}
+                                                    >
+                                                        Subject
+                                                    </label>
+                                                </>
                                             )}
                                         />
-                                        {errors.subject && <p className="text-red-500 text-sm mt-1">{errors.subject.message}</p>}
-                                    </div>
 
+                                        {/* Error */}
+                                        {errors.subject && (
+                                            <p className="text-red-500 text-sm mt-1">
+                                                {errors.subject.message}
+                                            </p>
+                                        )}
+
+                                    </div>
                                     {/* Message */}
-                                    <div className="group relative">
-                                        <label htmlFor="message" className="block text-sm font-medium text-gray-200 mb-1">
-                                            Message
-                                        </label>
+                                    <div className="relative group">
+
                                         <Controller
                                             name="message"
                                             control={control}
                                             render={({ field }) => (
-                                                <Textarea
-                                                    {...field}
-                                                    placeholder="Your Message"
-                                                    className={cn(
-                                                        "w-full bg-gray-800 text-white border border-gray-700 rounded-md px-4 py-3 min-h-[120px] transition-all duration-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 placeholder-gray-500",
-                                                        errors.message && "border-red-500 focus:ring-red-500"
-                                                    )}
-                                                    disabled={isSubmitting}
-                                                />
+                                                <>
+                                                    <Textarea
+                                                        {...field}
+                                                        placeholder=" "
+                                                        className={cn(
+                                                            "peer w-full bg-white/[0.02] text-white border border-white/[0.08] rounded-lg px-4 pt-6 pb-3 min-h-[140px] resize-none transition-all duration-300",
+                                                            "focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30",
+                                                            errors.message && "border-red-500 focus:ring-red-500/30"
+                                                        )}
+                                                        disabled={isSubmitting}
+                                                    />
+
+                                                    {/* Floating Label */}
+                                                    <label
+                                                        htmlFor="message"
+                                                        className={cn(
+                                                            "absolute left-4 text-sm transition-all duration-300 pointer-events-none",
+
+                                                            // 🧠 Default position (top for textarea)
+                                                            field.value
+                                                                ? "top-2 text-transparent peer-focus:top-2"
+                                                                : "top-3 text-white/40",
+
+                                                            // Focus state
+                                                            "peer-focus:top-2 peer-focus:text-xs peer-focus:text-purple-400",
+
+                                                            // 🔴 Error state
+                                                            errors.message && "top-2 text-xs text-red-500"
+                                                        )}
+                                                    >
+                                                        Message
+                                                    </label>
+                                                </>
                                             )}
                                         />
-                                        {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>}
-                                    </div>
 
+                                        {/* Error */}
+                                        {errors.message && (
+                                            <p className="text-red-500 text-sm mt-1">
+                                                {errors.message.message}
+                                            </p>
+                                        )}
+
+                                    </div>
                                     {/* Submit Button */}
                                     <Button
                                         type="submit"
-                                        className="w-full bg-gradient-to-r from-purple-600 to-pink-500 text-white py-3 rounded-full shadow-md hover:shadow-xl hover:scale-[1.03] active:scale-100 transition-all duration-300 font-semibold text-lg"
+                                        className="w-full py-4 text-lg font-semibold tracking-wide"
                                         disabled={isSubmitting}
                                     >
+                                        <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%]" />
                                         {isSubmitting ? (
                                             <>
-                                                <Loader2 className="mr-2 h-6 w-6 animate-spin" />
+                                                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                                                 Sending...
                                             </>
                                         ) : isSubmitSuccessful ? (
-                                            "Message Sent!"
+                                            "Message Sent ✓"
                                         ) : (
-                                            "Send Message"
+                                            "Send Message →"
                                         )}
                                     </Button>
 
@@ -618,74 +942,16 @@ const SanjaiPortfolio = () => {
                                 </form>
                             </div>
 
-
-                            {/* Contact Info */}
-                            <div className="bg-gray-900 dark:bg-gray-800 rounded-xl shadow-2xl p-8 backdrop-blur-md bg-opacity-80 border border-purple-500/20">
-                                <h3 className="text-3xl font-bold text-white mb-8 flex items-center">
-                                    <Mail className="mr-3 w-8 h-8 text-purple-400 animate-pulse" />
-                                    Contact Information
-                                </h3>
-                                <div className="space-y-6">
-                                    {[
-                                        {
-                                            icon: <Phone className="w-6 h-6 text-purple-400 group-hover:text-purple-300" />,
-                                            text: '+91 9048856828',
-                                            link: 'tel:+919048856828',
-                                        },
-                                        {
-                                            icon: <Mail className="w-6 h-6 text-purple-400 group-hover:text-purple-300" />,
-                                            text: 'sanjaiuthupthomas@gmail.com',
-                                            isMultiLine: true,
-                                            link: 'mailto:sanjaiuthupthomas@gmail.com',
-
-
-                                        },
-                                        {
-                                            icon: <MapPin className="w-6 h-6 text-purple-400 group-hover:text-purple-300 mt-1" />,
-                                            text: 'Kochi, Kerala, India',
-                                            isMultiLine: true,
-                                        },
-                                        {
-                                            icon: <Linkedin className="w-6 h-6 text-purple-400 group-hover:text-purple-300" />,
-                                            text: 'LinkedIn',
-                                            link: 'https://linkedin.com/in/sanjai-uthup-thomas-781407131',
-                                        },
-                                        {
-                                            icon: <Github className="w-6 h-6 text-purple-400 group-hover:text-purple-300" />,
-                                            text: 'GitHub',
-                                            link: 'https://github.com/Sanjai-Uthup-Thomas',
-                                        },
-                                    ].map((item, idx) => (
-                                        <div
-                                            key={idx}
-                                            className="flex items-start group transition-all duration-300 hover:scale-[1.02] hover:bg-gray-800/50 p-3 rounded-lg"
-                                        >
-                                            <div className="mr-4">{item.icon}</div>
-                                            {item.link ? (
-                                                <a
-                                                    href={item.link}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="text-gray-300 dark:text-gray-400 text-lg break-words max-w-[90%]"
-                                                >
-                                                    {item.text}
-                                                </a>
-                                            ) : (
-                                                <span className="text-gray-300 dark:text-gray-400 text-lg break-words max-w-[90%]"
-                                                >{item.text}</span>
-                                            )}
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
                         </div>
                     </div>
                 </section>
-
+                <Footer/>
             </div>
+            <FloatingContact />
         </div>
+
     );
 };
 
 export default SanjaiPortfolio;
+
