@@ -411,7 +411,7 @@ const SanjaiPortfolio = () => {
                         </div>
                     </div>
                 </section>
-                <section id="projects" className="pt-20 md:pt-32 relative overflow-hidden">
+                <section id="projects" className="pt-20 md:pt-32 pb-10 relative overflow-hidden">
 
                     {/* Heading */}
                     <div className="text-center mb-12 md:mb-32">
@@ -430,24 +430,30 @@ const SanjaiPortfolio = () => {
                             {/* LEFT */}
                             <div className="flex flex-col justify-center">
                                 <h3 className="text-3xl font-semibold text-white">
-                                    DevX API Suite <span className="text-white/40 text-lg">(Ongoing)</span>
+                                    DevX API Suite <span className="text-green-400 text-lg">(In Progress)</span>
                                 </h3>
 
                                 <p className="text-purple-400 text-sm mt-2">
-                                    NestJS • PostgreSQL • gRPC • Docker • CI/CD
+                                    NestJS • PostgreSQL • MongoDB • gRPC • Docker • API Gateway • Microservices
                                 </p>
 
                                 <div className="w-16 h-[2px] bg-gradient-to-r from-purple-500 to-pink-500 mt-4 mb-6" />
 
                                 <p className="text-white/80 leading-relaxed">
-                                    Designed and building a production-ready microservices architecture with modular services
-                                    for authentication, users, and notifications.
+                                    Building a scalable, production-grade microservices backend using NestJS,
+                                    featuring API Gateway, gRPC-based communication, and modular services
+                                    including Auth, User, Chat, and Notification systems with a hybrid database approach.
                                 </p>
 
                                 <div className="mt-6 space-y-2 text-white/60 text-sm">
-                                    <p>• gRPC-based inter-service communication</p>
-                                    <p>• Dockerized services</p>
-                                    <p>• CI/CD pipelines</p>
+                                    <p>• Implemented API Gateway with centralized routing</p>
+                                    <p>• gRPC-based inter-service communication (User & Notification services)</p>
+                                    <p>• Hybrid database architecture:</p>
+                                    <p className="ml-4">– PostgreSQL for relational data (Auth & core services)</p>
+                                    <p className="ml-4">– MongoDB for scalable, document-based services (User, Chat, Notification)</p>
+                                    <p>• Modular microservices with independent data layers</p>
+                                    <p>• Dockerized services for scalable deployment</p>
+                                    <p>• CI/CD pipeline setup (in progress)</p>
                                 </div>
 
                                 {/* CTA */}
@@ -461,7 +467,6 @@ const SanjaiPortfolio = () => {
                                         View Code →
                                     </a>
 
-                                    {/* ✅ FIX: Use real link OR hide if not available */}
                                     <a
                                         href="#"
                                         onClick={(e) => e.preventDefault()}
@@ -470,7 +475,6 @@ const SanjaiPortfolio = () => {
                                         Live Demo (Coming Soon)
                                     </a>
                                 </div>
-
                             </div>
 
                             {/* RIGHT (AUTO HEIGHT IMAGE) */}
@@ -493,23 +497,28 @@ const SanjaiPortfolio = () => {
 
                             <div className="flex flex-col justify-center">
                                 <h3 className="text-3xl font-semibold text-white">
-                                    Social Media App
+                                    Social Media Platform
                                 </h3>
 
                                 <p className="text-purple-400 text-sm mt-2">
-                                    React • Node.js • Socket.io • MongoDB • JWT
+                                    React • Node.js • Express • Socket.io • MongoDB • JWT • AWS EC2 • Nginx
                                 </p>
 
                                 <div className="w-16 h-[2px] bg-gradient-to-r from-purple-500 to-pink-500 mt-4 mb-6" />
 
                                 <p className="text-white/80 leading-relaxed">
-                                    Built a real-time social platform with chat and notifications.
+                                    Built and deployed a full-stack social media platform with real-time communication,
+                                    featuring scalable backend infrastructure hosted on AWS EC2 with Nginx-based load balancing.
                                 </p>
 
                                 <div className="mt-6 space-y-2 text-white/60 text-sm">
-                                    <p>• Real-time messaging</p>
-                                    <p>• JWT authentication</p>
-                                    <p>• Feed optimization</p>
+                                    <p>• Real-time messaging system using Socket.io (WebSockets)</p>
+                                    <p>• Secure authentication using JWT</p>
+                                    <p>• Full CRUD for posts, comments, and user interactions</p>
+                                    <p>• Deployed frontend & backend on AWS EC2 instances</p>
+                                    <p>• Configured Nginx as reverse proxy and load balancer</p>
+                                    <p>• Managed production environment with process handling & routing</p>
+                                    <p>• MongoDB for scalable, document-based data storage</p>
                                 </div>
 
                                 <div className="flex items-center gap-6 mt-6">
@@ -522,7 +531,6 @@ const SanjaiPortfolio = () => {
                                         View Code →
                                     </a>
 
-                                    {/* ✅ FIX: Use real link OR hide if not available */}
                                     <a
                                         href="#"
                                         onClick={(e) => e.preventDefault()}
@@ -531,7 +539,6 @@ const SanjaiPortfolio = () => {
                                         Live Demo (Not working)
                                     </a>
                                 </div>
-
                             </div>
 
                             <div className="relative w-full h-full min-h-[250px]">
@@ -553,27 +560,32 @@ const SanjaiPortfolio = () => {
 
                             <div className="flex flex-col justify-center">
                                 <h3 className="text-3xl font-semibold text-white">
-                                    Watchmen – E-commerce
+                                    Watchmen – E-commerce Platform
                                 </h3>
 
                                 <p className="text-purple-400 text-sm mt-2">
-                                    Node.js • MongoDB • Razorpay • PayPal • Twilio
+                                    Node.js • Express • MongoDB • Razorpay • PayPal • Twilio • AWS EC2 • Nginx
                                 </p>
 
                                 <div className="w-16 h-[2px] bg-gradient-to-r from-purple-500 to-pink-500 mt-4 mb-6" />
 
                                 <p className="text-white/80 leading-relaxed">
-                                    Developed a full-featured e-commerce platform with payments and admin dashboard.
+                                    Developed and deployed a full-featured e-commerce platform with secure payment integration,
+                                    real-time order management, and a custom admin dashboard for business analytics.
                                 </p>
 
                                 <div className="mt-6 space-y-2 text-white/60 text-sm">
-                                    <p>• Multi-payment integration</p>
-                                    <p>• OTP authentication</p>
-                                    <p>• Coupon system</p>
+                                    <p>• Integrated multiple payment gateways (Razorpay & PayPal)</p>
+                                    <p>• OTP-based authentication using Twilio</p>
+                                    <p>• Advanced admin dashboard with sales reports, charts & analytics</p>
+                                    <p>• Complete order lifecycle (cart → checkout → delivery)</p>
+                                    <p>• Coupon, wallet & offer system for dynamic pricing</p>
+                                    <p>• MongoDB-based scalable product and user data management</p>
+                                    <p>• Deployed on AWS EC2 with Nginx reverse proxy & load balancing</p>
+                                    <p>• Designed infrastructure for handling concurrent users and traffic distribution</p>
                                 </div>
 
                                 <div className="flex items-center gap-6 mt-6">
-
                                     <a
                                         href="https://github.com/Sanjai-Uthup-Thomas/Watchmen"
                                         target="_blank"
@@ -583,7 +595,6 @@ const SanjaiPortfolio = () => {
                                         View Code →
                                     </a>
 
-                                    {/* ✅ FIX: Use real link OR hide if not available */}
                                     <a
                                         href="#"
                                         onClick={(e) => e.preventDefault()}
@@ -592,7 +603,6 @@ const SanjaiPortfolio = () => {
                                         Live Demo (Not Working)
                                     </a>
                                 </div>
-
                             </div>
 
                             <div className="relative w-full h-full min-h-[250px]">
